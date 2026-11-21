@@ -1,0 +1,4 @@
+# tag=path   (copy to ~\.claude\tabs.txt and edit)
+api=D:\Git\mi-repo\api
+frontend=D:\Git\mi-repo\web
+backend=D:\Git\mi-repo\services

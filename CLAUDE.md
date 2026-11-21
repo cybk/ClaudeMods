@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ClaudeMods holds personal modifications of Claude Code's own interface. There is no build system, linter or test suite.
 
 - `statusline/statusline.sh`: bash status line (`[TAG] repo · branch* · Model`). Installed by copying it to `~/.claude/statusline.sh` and registering `statusLine` in `~/.claude/settings.json` (see `statusline/README.md`).
+- `statusline/tag.ps1`, `statusline/claude-tabs.ps1`: PowerShell helpers (`tag` command; Windows Terminal tab launcher). `claude-tabs.ps1` duplicates the color palette/hash from `statusline.sh` and they must stay in sync.
 
 ## Status line notes
 
