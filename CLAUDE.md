@@ -11,6 +11,8 @@ ClaudeMods holds personal modifications of Claude Code's own interface. There is
 
 ## Status line notes
 
+Design decisions and the pending team rollout are in `statusline/DESIGN.md` (read it before changing the script).
+
 - Claude Code passes session JSON on stdin (fields used: `workspace.current_dir`, `cwd`, `model.display_name`/`model.id`). All fields may be absent; the script must always exit 0.
 - It runs after every assistant message, so keep it fast: pure bash builtins plus a single `git status`. No `jq` (not installed); JSON is parsed with bash regexes.
 - On Windows the command runs through Git Bash; JSON paths arrive with escaped backslashes and are normalized to `/`.

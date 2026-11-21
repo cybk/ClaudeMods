@@ -54,3 +54,5 @@ tag -Remove      # borra el .claude-tag
 La paleta y el hash de `claude-tabs.ps1` deben coincidir con los de `statusline.sh` para que el color de la pestaña sea el de la barra.
 
 Nota: en PowerShell, `bash` puede ser el de WSL y no Git Bash. La status line la ejecuta Claude Code con Git Bash, así que no afecta, pero no pruebes `statusline.sh` con `bash` desde PowerShell: usa Git Bash.
+
+Decisiones de diseño y despliegue por proyecto pendiente: ver `DESIGN.md`.
