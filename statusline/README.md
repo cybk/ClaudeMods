@@ -2,16 +2,72 @@
 
 Script de status line para Claude Code que muestra `[TAG] repo · rama* · Modelo`, con un color determinista por tag para distinguir varias ventanas de un vistazo.
 
-## Instalación
+## Instalación en una computadora nueva (Windows)
 
-1. Copia `statusline.sh` a `~/.claude/statusline.sh`.
-2. Añade esta clave a `~/.claude/settings.json` (sin borrar el resto de la configuración):
+### Requisitos
+- **Git for Windows** (incluye Git Bash). Claude Code usa Git Bash para ejecutar la status line.
+- **Claude Code** ya instalado.
+- No necesita `jq` ni nada más.
 
-```json
-"statusLine": { "type": "command", "command": "bash ~/.claude/statusline.sh" }
-```
+### Pasos
+1. Clona el repo y copia el script. En **Git Bash**:
 
-Requiere `bash` (Git Bash en Windows) y `git`. No necesita `jq`.
+   ```bash
+   git clone https://github.com/cybk/ClaudeMods.git
+   cd ClaudeMods
+   mkdir -p ~/.claude
+   cp statusline/statusline.sh ~/.claude/statusline.sh
+   ```
+
+   Si ya tienes el repo, haz `git pull` antes de copiar.
+
+2. Registra la status line en `~/.claude/settings.json`.
+
+   - **Si el archivo no existe o está vacío**, créalo así:
+
+     ```json
+     {
+       "statusLine": { "type": "command", "command": "bash ~/.claude/statusline.sh" }
+     }
+     ```
+
+   - **Si ya tiene configuración**, añade solo la clave `statusLine` dentro del objeto principal, separada por coma de las demás, sin borrar nada. Antes haz una copia: `cp ~/.claude/settings.json ~/.claude/settings.json.bak`. Ejemplo:
+
+     ```json
+     {
+       "theme": "dark",
+       "statusLine": { "type": "command", "command": "bash ~/.claude/statusline.sh" }
+     }
+     ```
+
+   Si ya existe una clave `statusLine` con otro comando, se reemplaza: la clave es un único objeto, no una lista.
+
+3. **Abre una sesión nueva de `claude`.** La sesión abierta no recarga la configuración.
+
+### Verificar que funciona
+- En la parte inferior debe aparecer algo como `[MI-CARPETA] mi-carpeta · main · Opus`.
+- Prueba el tag: `CLAUDE_TAG=api claude` (en PowerShell: `$env:CLAUDE_TAG='api'; claude`) debe mostrar `[API]`.
+- Prueba el archivo de tag: en una carpeta de proyecto, `echo payments > .claude-tag` desde Git Bash y lanza `claude` ahí; debe mostrar `[PAYMENTS]`.
+- Prueba la marca de cambios: modifica un archivo versionado y la rama debe verse como `main*`. Los archivos nuevos sin seguimiento no cuentan.
+
+### Si no aparece la barra
+La status line falla en silencio: si el comando da error o no devuelve nada, la barra queda en blanco.
+
+1. Comprueba que Git Bash está instalado y que `bash` funciona **en Git Bash** (no en PowerShell, donde `bash` suele ser WSL).
+2. Ejecuta el script a mano, desde Git Bash:
+
+   ```bash
+   echo '{"cwd":"D:/ruta/a/un/repo","model":{"display_name":"Opus"}}' | bash ~/.claude/statusline.sh
+   ```
+
+   Debe imprimir una línea con el tag y la rama. Si da error, revisa que `~/.claude/statusline.sh` existe.
+3. Comprueba que el archivo tiene finales de línea LF. Si lo copiaste desde un checkout con CRLF, falla; en este repo `.gitattributes` fuerza LF para los `.sh`.
+4. Revisa que `settings.json` es JSON válido (comas y llaves). Un JSON roto hace que Claude Code ignore el archivo.
+5. Ejecuta `claude --debug` para ver mensajes del comando.
+6. Si usas la config **de un proyecto** (no la de usuario), la barra sale en blanco hasta que aceptes el diálogo de confianza del workspace. Con `--debug` verás "Status line command skipped: workspace trust not accepted".
+
+### Desinstalar
+Borra la clave `statusLine` de `~/.claude/settings.json` (o restaura `settings.json.bak`) y elimina `~/.claude/statusline.sh`.
 
 ## Cómo se decide el tag
 
