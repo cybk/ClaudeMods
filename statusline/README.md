@@ -4,7 +4,7 @@ Script de status line para Claude Code que muestra `[TAG] repo/subcarpeta · ram
 
 - `repo/subcarpeta`: aparece la ruta relativa cuando trabajas dentro de una subcarpeta del repo.
 - `↑N↓N`: commits adelantados/atrasados respecto al remoto (se omite si es 0 o no hay remoto).
-- `#a3f9`: primeros 4 caracteres del `session_id`; distingue dos ventanas en la misma carpeta y rama. Si Claude Code envía `session_name` (tras `/rename`), se muestra ese nombre en su lugar (no verificado: probar con `claude --debug`).
+- `#a3f9`: primeros 4 caracteres del `session_id`; distingue dos ventanas en la misma carpeta y rama. Tras `/rename`, Claude Code envía `session_name` y se muestra ese nombre en su lugar (verificado).
 
 ## Instalación en una computadora nueva (Windows)
 
