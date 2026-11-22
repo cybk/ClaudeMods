@@ -66,11 +66,14 @@ done
 if [[ -z $tag ]]; then tag=${dir##*/}; [[ -z $tag ]] && tag=$dir; fi
 
 # --- branch + dirty: a single git call ---
-branch="" dirty=""
+branch="" dirty="" sync=""
 if [[ -n $top ]]; then
   st=$(GIT_OPTIONAL_LOCKS=0 git -C "$dir" status --porcelain=v1 -b -uno 2>/dev/null) && {
     first=${st%%$'\n'*}
     if [[ $first == '## '* ]]; then
+      # ahead/behind: "## main...origin/main [ahead 2, behind 1]"
+      re='ahead ([0-9]+)'; [[ $first =~ $re ]] && sync+="↑${BASH_REMATCH[1]}"
+      re='behind ([0-9]+)'; [[ $first =~ $re ]] && sync+="↓${BASH_REMATCH[1]}"
       branch=${first#\#\# }
       branch=${branch#No commits yet on }; branch=${branch#Initial commit on }
       branch=${branch%%...*}; branch=${branch%% \[*}
@@ -81,9 +84,18 @@ if [[ -n $top ]]; then
 fi
 
 # --- render ---
+sub=""
+[[ -n $top && $dir == "$top"/* ]] && sub=${dir#"$top"/}
+
+# session label: /rename'd name if Claude Code sends one, else short session id
+sess=$(jstr session_name "$raw")
+if [[ -z $sess ]]; then sid=$(jstr session_id "$raw"); [[ -n $sid ]] && sess="#${sid:0:4}"; fi
+
 out="$(paint "[${tag^^}]" "$tag") $repo"
+[[ -n $sub ]] && out+="/$sub"
 [[ -n $worktree ]] && out+=" wt:$worktree"
-[[ -n $branch ]] && out+=" · $(paint "$branch$dirty" "$branch")"
+[[ -n $branch ]] && out+=" · $(paint "$branch$dirty" "$branch")${sync:+ $sync}"
 [[ -n $model ]] && out+=" · $model"
+[[ -n $sess ]] && out+=" · $sess"
 printf '%s' "$out"
 exit 0
