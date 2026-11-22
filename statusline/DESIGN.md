@@ -33,4 +33,4 @@ Datos confirmados en la documentación oficial:
 - `CLAUDE.md` es contexto para el modelo, no configuración: `statusLine` no se puede definir ahí.
 - La config del proyecto pisa a la de usuario (`settings.local.json` > `settings.json` del proyecto > `~/.claude/settings.json`). `statusLine` es un objeto único y se reemplaza.
 - Hasta aceptar el diálogo de confianza del workspace, la barra sale en blanco (`claude --debug` muestra "Status line command skipped: workspace trust not accepted"). Hay que avisar al equipo.
-- `.claude-tag` es personal: no se commitea ni se añade al `.gitignore` del proyecto sin preguntar.
+- `.claude-tag` es personal: no se commitea. En este repo está en el `.gitignore`; en otros proyectos no se añade al `.gitignore` sin preguntar.

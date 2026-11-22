@@ -17,4 +17,4 @@ Design decisions and the pending team rollout are in `statusline/DESIGN.md` (rea
 - It runs after every assistant message, so keep it fast: pure bash builtins plus a single `git status`. No `jq` (not installed); JSON is parsed with bash regexes.
 - On Windows the command runs through Git Bash; JSON paths arrive with escaped backslashes and are normalized to `/`.
 - Test by piping mock JSON: `echo '{"cwd":"D:/path"}' | bash statusline/statusline.sh`.
-- `.claude-tag` is a personal per-folder file; do not add it to a repo's `.gitignore` without asking.
+- `.claude-tag` is a personal per-folder file; it is already in this repo's `.gitignore`; do not add it to any other repo's `.gitignore` without asking.
